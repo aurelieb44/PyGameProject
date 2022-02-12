@@ -30,6 +30,7 @@ class AlienInvasion: #manage ressources and behavior
         # listen for events and get the right output
         while True:
             self._check_events()
+            self.ship.update() #calls the ship’s update() method 
             self._update_screen() #redraws screen every time you cycle
     
     def _check_events(self):
@@ -37,6 +38,17 @@ class AlienInvasion: #manage ressources and behavior
             #returns a list of events that have taken place since the last time this function was called
             if event.type == pygame.QUIT:
                 sys.exit()
+            elif event.type == pygame.KEYDOWN: #user presses key 
+                if event.key == pygame.K_RIGHT:
+                    self.ship.moving_right = True
+                elif event.key == pygame.K_LEFT: #We can use elif blocks because each event is connected to only one key.
+                    self.ship.moving_left = True
+            
+            elif event.type == pygame.KEYUP: #user releases key
+                if event.key == pygame.K_RIGHT:
+                    self.ship.moving_right = False
+                elif event.key == pygame.K_LEFT:
+                    self.ship.moving_left = False
 
     def _update_screen(self): #Update screen image and switch to new screen
         self.screen.fill(self.settings.bg_color) #fill the screen after each loop
