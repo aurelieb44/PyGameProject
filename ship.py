@@ -20,9 +20,9 @@ class Ship:
         self.screen.blit(self.image, self.rect) #draw the ship at its current location 
 
     def update(self): #update ship's position based on movement flag #call through an instance of the ship #not helper method
-        if self.moving_right:
+        if self.moving_right and self.rect.right < self.screen_rect.right:
             self.x += self.settings.ship_speed # Update the ship's x value, not the rect.
-        if self.moving_left: #we don't use elif to be more accurate when user holds both keys
+        if self.moving_left and self.rect.left > 0: #we don't use elif to be more accurate when user holds both keys
             self.x -= self.settings.ship_speed
         
         # Update rect object from self.x.
