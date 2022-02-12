@@ -49,6 +49,8 @@ class AlienInvasion: #manage ressources and behavior
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT: #We can use elif blocks because each event is connected to only one key.
             self.ship.moving_left = True
+        elif event.key == pygame.K_q: #press q to exit
+            sys.exit()
 
     def _check_keyup_events(self, event): #helper
         if event.key == pygame.K_RIGHT:
