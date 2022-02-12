@@ -3,6 +3,7 @@ import pygame #importing modules
 
 from settings import Settings
 from ship import Ship
+from bullet import Bullet
 
 class AlienInvasion: #manage ressources and behavior
 
@@ -24,6 +25,7 @@ class AlienInvasion: #manage ressources and behavior
         #use the screen_width and screen_height attributes of self.settings
         
         self.ship = Ship(self) #create an instance #self = current instance of AlienInvasion, gives Ship access to esources, screen object
+        self.bullets = pygame.sprite.Group() #draw bullets to the screen on each pass through the main loop
 
         pygame.display.set_caption("Alien Invasion") #window title
 
@@ -35,6 +37,7 @@ class AlienInvasion: #manage ressources and behavior
         while True:
             self._check_events()
             self.ship.update() #calls the ship’s update() method 
+            self.bullets.update() #update bullets' position
             self._update_screen() #redraws screen every time you cycle
     
     def _check_events(self):
@@ -55,6 +58,7 @@ class AlienInvasion: #manage ressources and behavior
             self.ship.moving_left = True
         elif event.key == pygame.K_q: #press q to exit
             sys.exit()
+        elif event.key == pygame.K_SPACE: self._fire_bullet()
 
     def _check_keyup_events(self, event): #helper
         if event.key == pygame.K_RIGHT:
@@ -62,9 +66,16 @@ class AlienInvasion: #manage ressources and behavior
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
 
+    def _fire_bullet(self): 
+        new_bullet = Bullet(self) #Creates bullet 
+        self.bullets.add(new_bullet) #adds it to bullets group #like append but for pygame groups
+
+
     def _update_screen(self): #Update screen image and switch to new screen
         self.screen.fill(self.settings.bg_color) #fill the screen after each loop
         self.ship.blitme() #draw the ship
+        for bullet in self.bullets.sprites():  #method returns a list of all sprites in the group bullet
+            bullet.draw_bullet() #draw fire bullets
         pygame.display.flip() #display the new positions of game elements, hides old ones
 
 if __name__ == '__main__': #check for special variables, which is set during program execution
