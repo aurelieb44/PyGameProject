@@ -11,7 +11,11 @@ class AlienInvasion: #manage ressources and behavior
 
         self.settings = Settings() #create an instance of Settings
 
-        self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height)) 
+        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        self.settings.screen_width = self.screen.get_rect().width
+        self.settings.screen_height = self.screen.get_rect().height
+
+        #self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))  #screen size
         #display window to draw graphical ele­ments
         #(1200, 800) = tuple = dimensions of the game window
         #attribute self.screen will be available in all methods in the class.
