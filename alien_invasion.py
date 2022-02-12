@@ -37,7 +37,7 @@ class AlienInvasion: #manage ressources and behavior
         while True:
             self._check_events()
             self.ship.update() #calls the ship’s update() method 
-            self.bullets.update() #update bullets' position
+            self._update_bullets()
             self._update_screen() #redraws screen every time you cycle
     
     def _check_events(self):
@@ -67,9 +67,17 @@ class AlienInvasion: #manage ressources and behavior
             self.ship.moving_left = False
 
     def _fire_bullet(self): 
-        new_bullet = Bullet(self) #Creates bullet 
-        self.bullets.add(new_bullet) #adds it to bullets group #like append but for pygame groups
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self) #Creates bullet 
+            self.bullets.add(new_bullet) #adds it to bullets group #like append but for pygame groups
 
+    def _update_bullets(self):
+        self.bullets.update() #update bullets' position
+
+        for bullet in self.bullets.copy():  # Get rid of bullets that have disappeared.
+            if bullet.rect.bottom <= 0:
+                    self.bullets.remove(bullet)
+            #print(len(self.bullets)) #show how many bullets exist and verify they’re deleted when they reach the top
 
     def _update_screen(self): #Update screen image and switch to new screen
         self.screen.fill(self.settings.bg_color) #fill the screen after each loop

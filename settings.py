@@ -11,3 +11,4 @@ class Settings: #work with just one settings object any time we access one setti
         self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = (60, 60, 60)
+        self.bullets_allowed = 3
