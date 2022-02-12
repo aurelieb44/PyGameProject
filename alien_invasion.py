@@ -39,16 +39,22 @@ class AlienInvasion: #manage ressources and behavior
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.KEYDOWN: #user presses key 
-                if event.key == pygame.K_RIGHT:
-                    self.ship.moving_right = True
-                elif event.key == pygame.K_LEFT: #We can use elif blocks because each event is connected to only one key.
-                    self.ship.moving_left = True
-            
+                self._check_keydown_events(event)
             elif event.type == pygame.KEYUP: #user releases key
-                if event.key == pygame.K_RIGHT:
-                    self.ship.moving_right = False
-                elif event.key == pygame.K_LEFT:
-                    self.ship.moving_left = False
+                self._check_keyup_events(event)
+
+
+    def _check_keydown_events(self, event): #helper
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = True
+        elif event.key == pygame.K_LEFT: #We can use elif blocks because each event is connected to only one key.
+            self.ship.moving_left = True
+
+    def _check_keyup_events(self, event): #helper
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = False
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = False
 
     def _update_screen(self): #Update screen image and switch to new screen
         self.screen.fill(self.settings.bg_color) #fill the screen after each loop
