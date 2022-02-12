@@ -21,9 +21,12 @@ class Ship:
 
     def update(self): #update ship's position based on movement flag #call through an instance of the ship #not helper method
         if self.moving_right:
-            self.rect.x += 1
+            self.x += self.settings.ship_speed # Update the ship's x value, not the rect.
         if self.moving_left: #we don't use elif to be more accurate when user holds both keys
-            self.rect.x -= 1
+            self.x -= self.settings.ship_speed
+        
+        # Update rect object from self.x.
+        self.rect.x = self.x
 
 #    def update(self):
 #         if self.moving_right and self.rect.right < self.screen_rect.right:

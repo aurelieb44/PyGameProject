@@ -4,3 +4,4 @@ class Settings: #work with just one settings object any time we access one setti
         self.screen_width = 1200 #screen settings
         self.screen_height = 600
         self.bg_color = (230,230,230)
+        self.ship_speed = 1.5 #moves by 1.5 pixels
