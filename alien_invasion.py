@@ -84,7 +84,29 @@ class AlienInvasion: #manage ressources and behavior
             #print(len(self.bullets)) #show how many bullets exist and verify they’re deleted when they reach the top
 
     def _create_fleet(self):
-        alien = Alien(self) #make one instance of an alien
+        alien = Alien(self) #make one instance of an alien, it won't be part of the fleet, just helps with size
+        # Create an alien and find the number of aliens in a row.
+        alien_width, alien_height = alien.rect.size # Spacing between each alien is equal to one alien width/height
+        # get the alien’s width from its rect attribute and store this value in alien_width so no need for rect attribute
+        available_space_x = self.settings.screen_width - (2 * alien_width)
+        number_aliens_x = available_space_x // (2 * alien_width)
+
+        ship_height = self.ship.rect.height # Determine the number of rows of aliens that fit on the screen.
+        available_space_y = (self.settings.screen_height - 
+                (3 * alien_height) - ship_height)
+        number_rows = available_space_y // (2 * alien_height)
+        
+        for row_number in range(number_rows): # Create the full fleet of aliens.
+            for alien_number in range(number_aliens_x): # Create the first row of aliens.
+                self._create_alien(alien_number, row_number)
+
+
+    def _create_alien(self, alien_number, row_number):
+        alien = Alien(self) # Create an alien and place it in the row.
+        alien_width, alien_height = alien.rect.size # we get the width, heigth of an alien inside the method instead of passing it as an argument. 
+        alien.x = alien_width + 2 * alien_width * alien_number #Each alien is pushed to the right one alien width from the left margin.
+        alien.rect.x = alien.x
+        alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
         self.aliens.add(alien) #add it to the group
 
 
