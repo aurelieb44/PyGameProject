@@ -43,6 +43,7 @@ class AlienInvasion: #manage ressources and behavior
             self.ship.update() #calls the ship’s update() method 
             self._update_bullets()
             self._update_screen() #redraws screen every time you cycle
+            self._update_aliens()
     
     def _check_events(self):
         for event in pygame.event.get(): #runs at every keyboard or mouse action
@@ -83,6 +84,10 @@ class AlienInvasion: #manage ressources and behavior
                     self.bullets.remove(bullet)
             #print(len(self.bullets)) #show how many bullets exist and verify they’re deleted when they reach the top
 
+    def _update_aliens(self):
+        self._check_fleet_edges()
+        self.aliens.update() #updates positions of all aliens in the fleet
+
     def _create_fleet(self):
         alien = Alien(self) #make one instance of an alien, it won't be part of the fleet, just helps with size
         # Create an alien and find the number of aliens in a row.
@@ -109,6 +114,16 @@ class AlienInvasion: #manage ressources and behavior
         alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
         self.aliens.add(alien) #add it to the group
 
+    def _check_fleet_edges(self): #Respond appropriately if any aliens have reached an edge
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+    
+    def _change_fleet_direction(self):
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= -1
 
     def _update_screen(self): #Update screen image and switch to new screen
         self.screen.fill(self.settings.bg_color) #fill the screen after each loop
