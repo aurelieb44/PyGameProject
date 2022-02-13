@@ -4,6 +4,7 @@ import pygame #importing modules
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 
 class AlienInvasion: #manage ressources and behavior
 
@@ -26,6 +27,9 @@ class AlienInvasion: #manage ressources and behavior
         
         self.ship = Ship(self) #create an instance #self = current instance of AlienInvasion, gives Ship access to esources, screen object
         self.bullets = pygame.sprite.Group() #draw bullets to the screen on each pass through the main loop
+
+        self.aliens = pygame.sprite.Group()
+        self._create_fleet()
 
         pygame.display.set_caption("Alien Invasion") #window title
 
@@ -79,11 +83,17 @@ class AlienInvasion: #manage ressources and behavior
                     self.bullets.remove(bullet)
             #print(len(self.bullets)) #show how many bullets exist and verify they’re deleted when they reach the top
 
+    def _create_fleet(self):
+        alien = Alien(self) #make one instance of an alien
+        self.aliens.add(alien) #add it to the group
+
+
     def _update_screen(self): #Update screen image and switch to new screen
         self.screen.fill(self.settings.bg_color) #fill the screen after each loop
         self.ship.blitme() #draw the ship
         for bullet in self.bullets.sprites():  #method returns a list of all sprites in the group bullet
             bullet.draw_bullet() #draw fire bullets
+        self.aliens.draw(self.screen) #make the alien appear
         pygame.display.flip() #display the new positions of game elements, hides old ones
 
 if __name__ == '__main__': #check for special variables, which is set during program execution
