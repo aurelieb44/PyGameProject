@@ -1,7 +1,9 @@
 import sys
+from time import sleep #so we can pause the game for a moment when the ship is hit
 import pygame #importing modules
 
 from settings import Settings
+from game_stats import GameStats
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
@@ -32,6 +34,8 @@ class AlienInvasion: #manage ressources and behavior
         self._create_fleet()
 
         pygame.display.set_caption("Alien Invasion") #window title
+
+        self.stats = GameStats(self) # Create an instance to store game statistics.
 
         self.bg_color = (230,230,230) #set background color
 
@@ -98,6 +102,10 @@ class AlienInvasion: #manage ressources and behavior
         self._check_fleet_edges()
         self.aliens.update() #updates positions of all aliens in the fleet
 
+        if pygame.sprite.spritecollideany(self.ship, self.aliens): # Look for alien-ship collisions #returns none if no collision
+            # print("Ship hit!!!")
+            self._ship_hit()        
+
     def _create_fleet(self):
         alien = Alien(self) #make one instance of an alien, it won't be part of the fleet, just helps with size
         # Create an alien and find the number of aliens in a row.
@@ -134,6 +142,17 @@ class AlienInvasion: #manage ressources and behavior
         for alien in self.aliens.sprites():
             alien.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
+
+    def _ship_hit(self): #Respond to ship being hit by an alien
+        self.stats.ships_left -= 1 # Decrement ships_left.
+        
+        self.aliens.empty() # Get rid of any remaining aliens and bullets.
+        self.bullets.empty()
+
+        self._create_fleet() # Create a new fleet and center the ship.
+        self.ship.center_ship()
+        
+        sleep(0.5) # Pause for 0.5 seconds
 
     def _update_screen(self): #Update screen image and switch to new screen
         self.screen.fill(self.settings.bg_color) #fill the screen after each loop
