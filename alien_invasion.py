@@ -62,7 +62,25 @@ class AlienInvasion: #manage ressources and behavior
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP: #user releases key
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN: # detects MOUSEBUTTONDOWN event when player clicks anywhere 
+                mouse_pos = pygame.mouse.get_pos() # returns a tuple: mouse cursor’s x- and y-coordinates when mouse button is clicked
+                self._check_play_button(mouse_pos) # send values to the new method _check_play_button()
 
+    def _check_play_button(self, mouse_pos): # Start new game when player clicks Play
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos) # stores true or false # check whether mouse click overlaps Play button’s rectangle
+        if button_clicked and not self.stats.game_active: #game restart only if Play is clicked and game not active
+            
+            self.settings.initialize_dynamic_settings() # Reset the game settings. 
+            
+            pygame.mouse.set_visible(False) # Hide mouse cursor when no play button
+
+            self.stats.reset_stats() # Reset game statistics = gives player 3 new ships
+            self.stats.game_active = True
+            self.aliens.empty() # Get rid of remaining aliens and bullets.
+            self.bullets.empty()
+            
+            self._create_fleet() # Create a new fleet and center the ship.
+            self.ship.center_ship()
 
     def _check_keydown_events(self, event): #helper
         if event.key == pygame.K_RIGHT:
@@ -101,6 +119,7 @@ class AlienInvasion: #manage ressources and behavior
         if not self.aliens: # if zero aliens
             self.bullets.empty() # remove bullets
             self._create_fleet() # create new fleet
+            self.settings.increase_speed() # increase speed when last alien shot down
 
     def _update_aliens(self):
         self._check_fleet_edges()
@@ -162,6 +181,7 @@ class AlienInvasion: #manage ressources and behavior
             sleep(0.5) # Pause for 0.5 seconds
         else:
             self.stats.game_active = False # user has used up all their ships
+            pygame.mouse.set_visible(True) # make cursor reappear once game ends so player can click Play
 
     def _check_aliens_bottom(self):
         screen_rect = self.screen.get_rect()
