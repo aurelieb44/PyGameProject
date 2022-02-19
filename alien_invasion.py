@@ -44,10 +44,12 @@ class AlienInvasion: #manage ressources and behavior
         # listen for events and get the right output
         while True:
             self._check_events()
-            self.ship.update() #calls the ship’s update() method 
-            self._update_bullets()
+            if self.stats.game_active: # happens only when game active
+                self.ship.update() #calls the ship’s update() method 
+                self._update_bullets()
+                self._update_aliens()
+
             self._update_screen() #redraws screen every time you cycle
-            self._update_aliens()
     
     def _check_events(self):
         for event in pygame.event.get(): #runs at every keyboard or mouse action
@@ -104,7 +106,9 @@ class AlienInvasion: #manage ressources and behavior
 
         if pygame.sprite.spritecollideany(self.ship, self.aliens): # Look for alien-ship collisions #returns none if no collision
             # print("Ship hit!!!")
-            self._ship_hit()        
+            self._ship_hit()      
+
+        self._check_aliens_bottom()  # Look for aliens hitting the bottom of the screen.
 
     def _create_fleet(self):
         alien = Alien(self) #make one instance of an alien, it won't be part of the fleet, just helps with size
@@ -144,15 +148,25 @@ class AlienInvasion: #manage ressources and behavior
         self.settings.fleet_direction *= -1
 
     def _ship_hit(self): #Respond to ship being hit by an alien
-        self.stats.ships_left -= 1 # Decrement ships_left.
+        if self.stats.ships_left > 0:
+            self.stats.ships_left -= 1 # Decrement ships_left.
         
-        self.aliens.empty() # Get rid of any remaining aliens and bullets.
-        self.bullets.empty()
+            self.aliens.empty() # Get rid of any remaining aliens and bullets.
+            self.bullets.empty()
 
-        self._create_fleet() # Create a new fleet and center the ship.
-        self.ship.center_ship()
+            self._create_fleet() # Create a new fleet and center the ship.
+            self.ship.center_ship()
         
-        sleep(0.5) # Pause for 0.5 seconds
+            sleep(0.5) # Pause for 0.5 seconds
+        else:
+            self.stats.game_active = False # user has used up all their ships
+
+    def _check_aliens_bottom(self):
+        screen_rect = self.screen.get_rect()
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= screen_rect.bottom:
+                self._ship_hit() # Treat this the same as if the ship got hit.
+                break
 
     def _update_screen(self): #Update screen image and switch to new screen
         self.screen.fill(self.settings.bg_color) #fill the screen after each loop
