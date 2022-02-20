@@ -18,6 +18,7 @@ class Settings: #work with just one settings object any time we access one setti
 
         # How quickly the game speeds up
         self.speedup_scale = 1.1
+        self.score_scale = 1.5 # How quickly the alien point values increase
         self.initialize_dynamic_settings()
 
     def initialize_dynamic_settings(self): # settings that change during the game
@@ -27,7 +28,12 @@ class Settings: #work with just one settings object any time we access one setti
         # include fleet _direction so aliens always move right at the beginning of a new game. 
         self.fleet_direction = 1 # fleet_direction of 1 represents right; -1 represents left.
 
+        self.alien_points = 50 # scoring # make sure point value is reset each time new game starts
+
     def increase_speed(self): # multiply each speed by value of speedup_scale
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
         self.alien_speed *= self.speedup_scale
+
+        self.alien_points = int(self.alien_points * self.score_scale)
+        print(self.alien_points) # see value of each alien
