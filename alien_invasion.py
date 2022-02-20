@@ -79,6 +79,8 @@ class AlienInvasion: #manage ressources and behavior
             self.stats.reset_stats() # Reset game statistics = gives player 3 new ships
             self.stats.game_active = True
             self.sb.prep_score()
+            self.sb.prep_level() # level image updates properly when start new game
+
             self.aliens.empty() # Get rid of remaining aliens and bullets.
             self.bullets.empty()
             
@@ -130,6 +132,9 @@ class AlienInvasion: #manage ressources and behavior
             self.bullets.empty() # remove bullets
             self._create_fleet() # create new fleet
             self.settings.increase_speed() # increase speed when last alien shot down
+
+            self.stats.level += 1 # Increase level.
+            self.sb.prep_level()
 
     def _update_aliens(self):
         self._check_fleet_edges()

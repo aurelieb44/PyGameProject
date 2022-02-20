@@ -12,6 +12,7 @@ class Scoreboard:
 
         self.prep_score() # call text to be displayed as image
         self.prep_high_score() # display high score separately
+        self.prep_level() # display current level
 
     def prep_score(self): # Turn the score into a rendered image
         score_str = str(self.stats.score) # turn numerical value stats.score into a string
@@ -32,6 +33,7 @@ class Scoreboard:
     def show_score(self): # draw score to screen
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
+        self.screen.blit(self.level_image, self.level_rect)
 
     def prep_high_score(self): # Turn high score into a rendered image
         high_score = round(self.stats.high_score, -1)
@@ -47,4 +49,14 @@ class Scoreboard:
     def check_high_score(self): # Check to see if there's a new high score
         if self.stats.score > self.stats.high_score:
             self.stats.high_score = self.stats.score
-            self.prep_high_score() # call to update the high score’s imag
+            self.prep_high_score() # call to update the high score’s image
+
+    def prep_level(self): # Turn value stored in stats.level into a rendered image
+        level_str = str(self.stats.level)
+        self.level_image = self.font.render(level_str, True,
+            self.text_color, self.settings.bg_color) 
+
+        # Position the level below the score.
+        self.level_rect = self.level_image.get_rect()
+        self.level_rect.right = self.score_rect.right # sets image’s right attribute to match score’s right attribute
+        self.level_rect.top = self.score_rect.bottom + 10 # sets the top attribute 10 pixels beneath the bottom of the score image
