@@ -124,7 +124,7 @@ class AlienInvasion: #manage ressources and behavior
                 # multiply value of each alien by number of aliens in each list and add this amount to the current score
                 self.stats.score += self.settings.alien_points * len(aliens) 
             self.sb.prep_score()
-            
+            self.sb.check_high_score()
 
         if not self.aliens: # if zero aliens
             self.bullets.empty() # remove bullets
