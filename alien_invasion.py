@@ -80,6 +80,7 @@ class AlienInvasion: #manage ressources and behavior
             self.stats.game_active = True
             self.sb.prep_score()
             self.sb.prep_level() # level image updates properly when start new game
+            self.sb.prep_ships() # show how many ships they start with
 
             self.aliens.empty() # Get rid of remaining aliens and bullets.
             self.bullets.empty()
@@ -186,6 +187,7 @@ class AlienInvasion: #manage ressources and behavior
     def _ship_hit(self): #Respond to ship being hit by an alien
         if self.stats.ships_left > 0:
             self.stats.ships_left -= 1 # Decrement ships_left.
+            self.sb.prep_ships() # update display of ship images when looses a ship
         
             self.aliens.empty() # Get rid of any remaining aliens and bullets.
             self.bullets.empty()

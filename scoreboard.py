@@ -1,7 +1,10 @@
 import pygame.font
+from pygame.sprite import Group
+from ship import Ship
 
 class Scoreboard:
     def __init__(self, ai_game): # Initialize scorekeeping attributes
+        self.ai_game = ai_game
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect()
         self.settings = ai_game.settings
@@ -13,6 +16,7 @@ class Scoreboard:
         self.prep_score() # call text to be displayed as image
         self.prep_high_score() # display high score separately
         self.prep_level() # display current level
+        self.prep_ships()
 
     def prep_score(self): # Turn the score into a rendered image
         score_str = str(self.stats.score) # turn numerical value stats.score into a string
@@ -34,6 +38,7 @@ class Scoreboard:
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.level_image, self.level_rect)
+        self.ships.draw(self.screen) # draw ships
 
     def prep_high_score(self): # Turn high score into a rendered image
         high_score = round(self.stats.high_score, -1)
@@ -60,3 +65,11 @@ class Scoreboard:
         self.level_rect = self.level_image.get_rect()
         self.level_rect.right = self.score_rect.right # sets image’s right attribute to match score’s right attribute
         self.level_rect.top = self.score_rect.bottom + 10 # sets the top attribute 10 pixels beneath the bottom of the score image
+
+    def prep_ships(self): #Show how many ships are left
+        self.ships = Group() # empty group to hold ship instances
+        for ship_number in range(self.stats.ships_left): # loop for every ship left
+            ship = Ship(self.ai_game)
+            ship.rect.x = 10 + ship_number * ship.rect.width # 10 pixels margin between ships
+            ship.rect.y = 10 # ships appear on upper-left corner
+            self.ships.add(ship) # add new ship to the group
