@@ -10,9 +10,9 @@ class Ship(Sprite):
         self.screen_rect = ai_game.screen.get_rect() #access the screen’s rect attribute & positions the ship
         
         self.image = pygame.image.load('ship.bmp') # returns a surface representing the ship
-        self.rect = self.image.get_rect() #get external rectangle of the ship 
+        self.rect = self.image.get_rect() # get external rectangle of the ship 
 
-        self.rect.midbottom = self.screen_rect.midbottom #where to position new ship
+        self.rect.midbottom = self.screen_rect.midbottom # where to position new ship
         self.x = float(self.rect.x)  # Store a decimal value for the ship's position.
          
         self.moving_right = False # Movement flag

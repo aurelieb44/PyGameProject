@@ -217,7 +217,7 @@ class AlienInvasion: #manage ressources and behavior
         
         if not self.stats.game_active: # Draw the play button if the game is inactive.
             self.play_button.draw_button()
-        pygame.display.flip() #display the new positions of game elements, hides old ones
+        pygame.display.() #display the new positions of game elements, hides old ones
 
 if __name__ == '__main__': #check for special variables, which is set during program execution
     ai = AlienInvasion()
