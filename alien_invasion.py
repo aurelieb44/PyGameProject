@@ -95,7 +95,8 @@ class AlienInvasion: #manage ressources and behavior
             self.ship.moving_left = True
         elif event.key == pygame.K_q: #press q to exit
             sys.exit()
-        elif event.key == pygame.K_SPACE: self._fire_bullet()
+        elif event.key == pygame.K_SPACE: 
+            self._fire_bullet()
 
     def _check_keyup_events(self, event): #helper
         if event.key == pygame.K_RIGHT:
@@ -186,7 +187,7 @@ class AlienInvasion: #manage ressources and behavior
 
     def _ship_hit(self): #Respond to ship being hit by an alien
         if self.stats.ships_left > 0:
-            self.stats.ships_left -= 1 # Decrement ships_left.
+            self.stats.ships_left -= 1 # Decrement ships_left, When alien hits ship
             self.sb.prep_ships() # update display of ship images when looses a ship
         
             self.aliens.empty() # Get rid of any remaining aliens and bullets.
@@ -205,7 +206,7 @@ class AlienInvasion: #manage ressources and behavior
         for alien in self.aliens.sprites():
             if alien.rect.bottom >= screen_rect.bottom:
                 self._ship_hit() # Treat this the same as if the ship got hit.
-                break
+                break # If one alien hits the bottom, no need to check the rest, so we break out of the loop
 
     def _update_screen(self): #Update screen image and switch to new screen
         self.screen.fill(self.settings.bg_color) #fill the screen after each loop
@@ -213,11 +214,11 @@ class AlienInvasion: #manage ressources and behavior
         for bullet in self.bullets.sprites():  #method returns a list of all sprites in the group bullet
             bullet.draw_bullet() #draw fire bullets
         self.aliens.draw(self.screen) #make the alien appear
-        self.sb.show_score() # draw scoreboard
+        self.sb.show_score() # Show score, rank and number of spaceships
         
         if not self.stats.game_active: # Draw the play button if the game is inactive.
             self.play_button.draw_button()
-        pygame.display.() #display the new positions of game elements, hides old ones
+        pygame.display.flip() #display the new positions of game elements, hides old ones
 
 if __name__ == '__main__': #check for special variables, which is set during program execution
     ai = AlienInvasion()
