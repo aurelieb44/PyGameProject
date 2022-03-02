@@ -4,7 +4,7 @@ from pygame.sprite import Sprite
 class Bullet(Sprite):
 
     def __init__(self, ai_game):
-        super().__init__() #create bullet object at ship's position
+        super().__init__() #create bullet object at ship's position # we call super() to inherit properly from Sprite
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         self.color = self.settings.bullet_color

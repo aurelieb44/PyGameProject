@@ -29,7 +29,7 @@ class AlienInvasion: #manage ressources and behavior
         #surface here = represents the entire game window.
         #use the screen_width and screen_height attributes of self.settings
         
-        self.ship = Ship(self) #create an instance #self = current instance of AlienInvasion, gives Ship access to esources, screen object
+        self.ship = Ship(self) #create an instance #self = current instance of AlienInvasion, gives Ship access to resources, screen object
         self.bullets = pygame.sprite.Group() #draw bullets to the screen on each pass through the main loop
 
         self.aliens = pygame.sprite.Group()
